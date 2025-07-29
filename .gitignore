@@ -1,0 +1,11 @@
+.texpadtmp
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.xdv
+template
+.DS_Store
+*.pdf

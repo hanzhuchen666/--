@@ -1,0 +1,50 @@
+% 定义可复用的tcolorbox环境类
+% 定理环境
+\newtcolorbox{theorembox}[1][]{
+    colback=Emerald!10,
+    colframe=cyan!40!black,
+    title=\textbf{定理#1},
+    fonttitle=\large,
+    arc=3pt,
+    boxrule=1pt
+}
+
+% 定义环境
+\newtcolorbox{definitionbox}[1][]{
+    title=\textbf{定义#1},
+    colback=SeaGreen!10!CornflowerBlue!10,
+    colframe=RoyalPurple!55!Aquamarine!100!,
+    fonttitle=\large,
+    arc=3pt,
+    boxrule=1pt
+}
+
+% 引理环境
+\newtcolorbox{lemmabox}[1][]{
+    title=\textbf{引理#1},
+    colback=Salmon!20,
+    colframe=Salmon!90!Black,
+    fonttitle=\large,
+    arc=3pt,
+    boxrule=1pt
+}
+
+% 推论环境
+\newtcolorbox{corollarybox}[1][]{
+    title=\textbf{推论#1},
+    colback=OldLace,
+    colframe=dedcolor,
+    fonttitle=\large,
+    arc=3pt,
+    boxrule=1pt
+}
+
+% 证明环境
+\newtcolorbox{proofbox}[1][]{
+    colback=JungleGreen!10!Cerulean!15,
+    colframe=CornflowerBlue!60!Black,
+    fonttitle=\large,
+    arc=3pt,
+    boxrule=1pt,
+    before upper={\textbf{证明#1}}
+} 

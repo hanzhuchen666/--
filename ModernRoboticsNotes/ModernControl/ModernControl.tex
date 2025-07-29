@@ -1,0 +1,124 @@
+\chapter{现代控制论基础}
+\section{状态空间方程与线性系统}
+\begin{equation*}
+	\begin{cases}
+		x[k+1] = Ax[k] + Bu[k]\\
+		y[k] = Cx[k] + Du[k]
+	\end{cases}
+\end{equation*}
+\subsection{连续系统到离散系统相互转换}
+线性情况下
+\begin{equation*}
+  \begin{cases}
+  	\dot{x} = A_cx + B_cu\\
+  	y = C_cx + D_cu
+  \end{cases}
+\end{equation*}
+可以转换为
+\begin{equation*}
+  \begin{cases}
+  	x[k+1] = A_dx[k] + B_du[k]\\
+  	y[k] = C_dx[k] + D_du[k]
+  \end{cases}
+\end{equation*}
+其中
+\begin{gather*}
+ A_d = I + A_c\Delta t\\
+ B_d = B_c \Delta t \\
+ C_d = C_c\\
+ D_d = D_c 
+\end{gather*}
+\subsubsection{前向欧拉法}
+\subsubsection{后向欧拉法}
+\subsubsection{其他方法}
+\section{非线性近似为线性系统}
+\section{最小二乘推导}
+测量公式，$\theta \in R^n$ 是隐藏参数，$ v \in R^m $ 是测量噪声
+\begin{equation}
+  y = g(\theta) + v
+\end{equation}
+
+问题定义：
+\begin{equation}
+  \min{\theta \in \Theta}J(\theta) = min \Vert y - g(\theta) \Vert ^2
+\end{equation}
+线性最小二乘：$g(\theta) = H \theta $
+利用简单的数学计算
+\begin{theorembox}
+	if $f(x) = Ax$, then $\nabla f(x) = A$
+\end{theorembox}
+\begin{theorembox}
+	if $f(x) = x^TAx$, then $\nabla f(x) = A^Tx+Ax$
+\end{theorembox}
+可以证明
+\begin{theorembox}
+	如果$H\in R^{m\times n}$列满秩，则存在解$\theta = (H^TH)^{-1}H^Ty$ 
+\end{theorembox}
+\section{逆矩阵}
+\begin{theorembox}
+	针对矩阵$A \in R^{m\times n}$，若A列满秩，则矩阵左逆为$A_{left}^{-1} = (A^TA)^{-1}A^T$，满足$A_{left}^{-1}A = I_{n \times n}$。
+\end{theorembox}
+
+
+\section{伪逆矩阵Moore-Penrose逆}
+摩尔-彭罗斯逆的应用场景：
+\begin{itemize}
+  \item 最小二乘问题：:线性回归等问题中，当系数矩阵不是方阵时，摩尔-彭罗斯逆可以用来求解最小二乘解。
+  \item 欠定方程组：:对于方程组的解不唯一的情况，摩尔-彭罗斯逆可以找到一个具有最小范数的解。
+  \item 矩阵的秩的计算：:摩尔-彭罗斯逆可以用来确定一个矩阵的秩。
+  \item 信号处理和图像处理：:在这些领域中，摩尔-彭罗斯逆可以用于去噪、滤波等任务。
+  \item 控制理论：:用于设计控制器，特别是当系统模型是非方阵时。﻿
+\end{itemize}
+摩尔-彭罗斯逆的性质：
+\begin{itemize}
+  \item 唯一性：:对于任意一个矩阵，其摩尔-彭罗斯逆是唯一的。
+  \item 广义逆：:如果一个矩阵是可逆的，那么它的摩尔-彭罗斯逆就是它的普通逆矩阵。
+  \item 满足Penrose 方程：:摩尔-彭罗斯逆满足四个特定的Penrose 方程，这些方程定义了摩尔-彭罗斯逆的性质。﻿
+\end{itemize}
+
+
+
+\section{投影矩阵}
+
+\subsection{最小二乘应用与例子}
+\begin{enumerate}
+  \item 可以用作求解线性方程组的最小
+二乘根，使得解误差的而范数最小
+  \item 可以通过构造方程组来进行系统参数辨识
+\end{enumerate}
+\section{稳定性、可控性和可观性}
+\section{状态反馈/输出反馈控制设计}
+\section{状态空间跟踪控制器设计}
+\section{卡尔曼滤波原理}
+\subsection{扩展卡尔曼滤波}
+
+
+
+
+\chapter{函数最优化问题求解方式}
+\section{原始牛顿法}
+\section{雅可比矩阵和Hessian矩阵}
+\section{高斯-牛顿法}
+\section{拟牛顿法}
+\subsection{Levenberg-Marquardt algorithm, LM}
+\subsection{Davidon-Fletcher-Powell algoritm DFP}
+\subsection{Broyden–Fletcher–Goldfarb–Shanno algorithm BFGS}
+
+
+\chapter{最优控制}
+\section{LQR}
+\subsection{iLQR}
+\subsection{DDP}
+
+\chapter{轨迹优化}
+\section{概述}
+\section{直接法}
+\subsection{Single Shooting}
+\subsection{Multiple Shooting}
+\subsection{Collocation Method}
+\section{间接法}
+
+
+
+
+

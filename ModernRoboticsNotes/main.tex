@@ -1,0 +1,79 @@
+\documentclass[12pt, a4paper, oneside]{ctexbook}
+\usepackage{amsmath, amsthm, amssymb, bm, graphicx, hyperref, mathrsfs,}
+\usepackage{newtxtext}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage{tcolorbox}
+\definecolor{dedcolor}{rgb}{0.77,0.72,0.65}
+
+% 包含环境定义
+\input{Environments.tex}
+
+\title{{\Huge{\textbf{现代机器人学笔记}}}}
+\author{hanzhuchen666}
+\date{2025年7月29日}
+\linespread{1.5}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}{推论}
+\newtheorem{example}{例}
+\newtheorem{proposition}{命题}
+
+\begin{document}
+
+\maketitle
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\begin{center}
+    \Huge\textbf{前言}
+\end{center}~\
+
+前言内容
+
+注:本文所使用一些图示如下
+
+% 使用封装后的环境类
+\begin{theorembox}
+这是定理
+\end{theorembox}
+
+\begin{definitionbox}
+这是定义
+\end{definitionbox}
+
+\begin{lemmabox}
+这是引理
+\end{lemmabox}
+
+\begin{corollarybox}
+这是推论
+\end{corollarybox}
+
+\begin{proofbox}
+这是证明
+\end{proofbox}
+~\\
+\begin{flushright}
+    \begin{tabular}{c}
+        hanzhuchen666\\
+        
+    \end{tabular}
+\end{flushright}
+
+\newpage
+\pagenumbering{Roman}
+\setcounter{page}{1}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\include{ModernControl/ModernControl.tex}
+\include{ModernRobotics/ModernRobotics.tex}
+\include{MathTools/MathTools.tex}
+
+
+
+\end{document}
