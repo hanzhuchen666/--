@@ -32,7 +32,7 @@
 \subsubsection{后向欧拉法}
 \subsubsection{其他方法}
 \section{非线性近似为线性系统}
-\section{最小二乘推导}
+\section{最小二乘}
 测量公式，$\theta \in R^n$ 是隐藏参数，$ v \in R^m $ 是测量噪声
 \begin{equation}
   y = g(\theta) + v
@@ -40,28 +40,101 @@
 
 问题定义：
 \begin{equation}
-  \min{\theta \in \Theta}J(\theta) = min \Vert y - g(\theta) \Vert ^2
+  \min_{\theta \in \Theta}J(\theta) = min \Vert y - g(\theta) \Vert ^2
 \end{equation}
-线性最小二乘：$g(\theta) = H \theta $
+
+\subsection{线性最小二乘}
+有$g(\theta) = H \theta $
 利用简单的数学计算
 \begin{theorembox}
-	if $f(x) = Ax$, then $\nabla f(x) = A$
+	如果有$f(x) = Ax$, 则有$\nabla f(x) = A$
 \end{theorembox}
 \begin{theorembox}
-	if $f(x) = x^TAx$, then $\nabla f(x) = A^Tx+Ax$
+	如果有$f(x) = x^TAx$, 则有$\nabla f(x) = A^Tx+Ax$
 \end{theorembox}
 可以证明
 \begin{theorembox}
 	如果$H\in R^{m\times n}$列满秩，则存在解$\theta = (H^TH)^{-1}H^Ty$ 
 \end{theorembox}
-\section{逆矩阵}
+\subsection{带正则化的最小二乘}\label{ModernControl::sec::regularized-least-squares}
+为了防止实际过程中的过拟合问题，常常把目标函数加上正则化项，此时目标函数变成
+% todo: 有其他用途？比如行满秩时最小二乘
+\begin{equation*}
+	\min_{\theta \in \Theta} \Vert y - H\theta \Vert ^2 + \Vert \theta \Vert ^2
+\end{equation*}
 \begin{theorembox}
-	针对矩阵$A \in R^{m\times n}$，若A列满秩，则矩阵左逆为$A_{left}^{-1} = (A^TA)^{-1}A^T$，满足$A_{left}^{-1}A = I_{n \times n}$。
+	如上目标函数的最小二乘解为$\theta = (H^TH + \mu I)^{-1}H^Ty$。其中$\mu$为可调参数。且当$\mu \rightarrow 0$，有 $(H^TH + \mu I)^{-1}H^T \rightarrow H^T(HH^T)^{-1}$
+\end{theorembox}
+% todo: 添加推导过程
+这也解释了矩阵右逆和带正则化的最小二乘之间的关系。
+\subsection{上述方法（左伪逆法）求解最小二乘的缺陷}
+用这个方法解决 least squares problems 存在两个缺陷:
+
+\begin{itemize}
+  \item $A^T A$ 会导致信息的丢失。假设 A 中某一项是一个计算机刚好能表示的浮点数，A 乘以 A 的转置后浮点数的平方可能超出精度而被丢失，从而导致 $A^T A$ 是奇异矩阵无法求解，应对的方法是后面要学的奇异值分解。
+  \item $A^T A$ 的条件数是 A 的平方。系统不稳定性变大了。应对的方法是对数据进行中心化预处理，这样做的目的是要增加基向量的正交性。
+\end{itemize}
+
+\subsection{QR分解求最小二乘}
+\subsection{QR分解用于更新最小二乘解集}
+% todo : QR分解用于最小二乘
+
+\begin{proofbox}[QR分解求解左逆矩阵（最小二乘）]
+	
+\end{proofbox}
+% todo : SVD分解用于求解最小二乘
+\subsection{SVD分解用于最小二乘求解}
+\begin{theorembox}
+	$\theta = V\Sigma ^{-1}U_1b$
 \end{theorembox}
 
+\section{逆矩阵}
+\begin{theorembox}
+	系统辨识常使用最小二乘法解决。线性最小二乘本质上是求解线性方程组。求解线性方程组本质是在求矩阵的逆。
+	\begin{itemize}
+  \item 当矩阵为高矩阵，列满秩，超定，方程可能无解，使用左逆可以求得最小二乘解。
+  \item 另外一种情况是，矩阵为胖矩阵，行满秩，欠定，矩阵有无数多解，使用右逆可以求得最小范数解。
+  \item Moore-Penrose提出了广义逆矩阵，在高满秩矩阵时是左逆，在胖满秩矩阵时是右逆。可以同刚果cholesky分解，QR分解，SVD分解等方式计算出广义逆。
+  \item 
+\end{itemize}
+\end{theorembox}
 
-\section{伪逆矩阵Moore-Penrose逆}
-摩尔-彭罗斯逆的应用场景：
+\begin{lemmabox}[一些有意思的思考]
+	\begin{itemize}
+  \item 方程组本质上是自变量进行了空间变换得到了因变量。求解方程组任务常常是已知因变量求自变量。
+  \item 线性化可以求解因变量在空间变换中的梯度。在一定尺度上可以将非线性系统转化为线性系统。
+  \item 梯度下降法等迭代方法可以利用因变量梯度使自变量逐步逼近真实值。（系统需满足特定条件）
+  \item 梯度下降法在单词迭代的过程中退化为求解线性方程组问题
+\end{itemize}
+\end{lemmabox}
+
+\subsection{左逆矩阵求解最小二乘问题}
+\begin{theorembox}
+	针对矩阵$A \in R^{m\times n}$，若A列满秩，则矩阵左逆为$A_{left}^{-1} = (A^TA)^{-1}A^T$，满足$A_{left}^{-1}A = I_{n \times n}$。此时$(A^TA)^{-1}A^Ty$为最小二乘解
+\end{theorembox}
+\subsection{右逆矩阵求解欠定方程}
+\begin{theorembox}
+	针对矩阵$A \in R^{m\times n}$，若A行满秩，则矩阵右逆为$A_{right}^{-1} = A^T(AA^T)^{-1}$。此时$A^T(AA^T)^{-1}y$为无穷多解中的最小范数解。
+\end{theorembox}
+\subsubsection{右逆矩阵可以通过QR分解得到}
+
+\begin{theorembox}[通过QR分解求解右逆矩阵]
+	将矩阵A的转置进行QR分解，$A^T = QR$。有$Q\in R^{n\times m}$，$R\in R^{m\times m}$，R为上三角矩阵，非奇异。
+	\begin{itemize}
+  		\item $x_{ln} = A^T(AA^T)^{-1}y = QR^{-T}y$
+  		\item $\Vert x_{ln}\Vert = \Vert R^{-T}y\Vert$
+	\end{itemize}
+\end{theorembox}
+
+QR分解的方式参考\ref{MathTools:sec:qr_decomposition}节中的QR分解方法
+\externaldocument{../MathTools/MathTools}
+\subsubsection{QR分解可以通过HouseHolder法得到}
+参考\ref{MathTools:sec:householder}节中的详细推导。
+\subsection{伪逆矩阵Moore-Penrose逆}
+% 引用MathTools中的矩阵逆相关内容
+关于矩阵逆的详细讨论，参考\ref{MathTools:chap:matrix_inverse}章。
+
+\subsubsection{摩尔-彭罗斯逆的应用场景}
 \begin{itemize}
   \item 最小二乘问题：:线性回归等问题中，当系数矩阵不是方阵时，摩尔-彭罗斯逆可以用来求解最小二乘解。
   \item 欠定方程组：:对于方程组的解不唯一的情况，摩尔-彭罗斯逆可以找到一个具有最小范数的解。
@@ -69,7 +142,7 @@
   \item 信号处理和图像处理：:在这些领域中，摩尔-彭罗斯逆可以用于去噪、滤波等任务。
   \item 控制理论：:用于设计控制器，特别是当系统模型是非方阵时。﻿
 \end{itemize}
-摩尔-彭罗斯逆的性质：
+\subsubsection{摩尔-彭罗斯逆的性质}
 \begin{itemize}
   \item 唯一性：:对于任意一个矩阵，其摩尔-彭罗斯逆是唯一的。
   \item 广义逆：:如果一个矩阵是可逆的，那么它的摩尔-彭罗斯逆就是它的普通逆矩阵。
@@ -78,7 +151,9 @@
 
 
 
-\section{投影矩阵}
+\subsection{投影矩阵}
+% todo: 添加投影矩阵的用法
+投影矩阵的计算可以基于\ref{MathTools:chap:matrix_decomposition}章中的矩阵分解方法。
 
 \subsection{最小二乘应用与例子}
 \begin{enumerate}
@@ -95,17 +170,16 @@
 
 
 
-\chapter{函数最优化问题求解方式}
-\section{原始牛顿法}
-\section{雅可比矩阵和Hessian矩阵}
-\section{高斯-牛顿法}
-\section{拟牛顿法}
-\subsection{Levenberg-Marquardt algorithm, LM}
-\subsection{Davidon-Fletcher-Powell algoritm DFP}
-\subsection{Broyden–Fletcher–Goldfarb–Shanno algorithm BFGS}
-
-
 \chapter{最优控制}
+\section{函数最优化问题}
+% 引用MathTools中的最优化方法
+求解方式详见\ref{MathTools:chap:optimization}章，包括：
+\begin{itemize}
+    \item 原始牛顿法：参考\ref{MathTools:sec:newton_method}
+    \item 雅可比矩阵和Hessian矩阵：参考\ref{MathTools:sec:jacobian_hessian}
+    \item 高斯-牛顿法：参考\ref{MathTools:sec:gauss_newton}
+    \item 拟牛顿法：参考\ref{MathTools:sec:quasi_newton}
+\end{itemize}
 \section{LQR}
 \subsection{iLQR}
 \subsection{DDP}

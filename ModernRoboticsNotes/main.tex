@@ -1,9 +1,32 @@
 \documentclass[12pt, a4paper, oneside]{ctexbook}
 \usepackage{amsmath, amsthm, amssymb, bm, graphicx, hyperref, mathrsfs,}
 \usepackage{newtxtext}
+\usepackage{geometry}
+\geometry{
+    left=2cm,      % 左边距
+    right=2cm,     % 右边距
+    top=2.5cm,     % 上边距
+    bottom=2.5cm,  % 下边距
+    headheight=1cm, % 页眉高度
+    footskip=1cm   % 页脚距离
+}
 \usepackage[dvipsnames,svgnames]{xcolor}
 \usepackage{tcolorbox}
 \definecolor{dedcolor}{rgb}{0.77,0.72,0.65}
+% 处理跨文件引用
+\usepackage{xr}
+\newcommand*{\addFileDependency}[1]{
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+\newcommand*{\myexternaldocument}[1]{
+    \externaldocument{#1}
+    \addFileDependency{#1.tex}
+    \addFileDependency{#1.aux}
+}
 
 % 包含环境定义
 \input{Environments.tex}
