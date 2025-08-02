@@ -10,13 +10,13 @@
 \subsubsection{SVD分解应用于PCA主成份分析}
 https://www.cnblogs.com/daniel-D/p/3218063.html
 \chapter{矩阵的逆及其求解方式}\label{MathTools:chap:matrix_inverse}
+\section{若尔当型}
 \section{LU分解求解对称正定矩阵的逆}\label{MathTools:sec:lu_inverse}
 \section{QR分解求解右伪逆}\label{MathTools:sec:qr_pseudoinverse}
 \section{SVD分解求广义逆}\label{MathTools:sec:svd_pseudoinverse}
 
-
-
 \chapter{函数最优化问题求解方式}\label{MathTools:chap:optimization}
+\section{拉格朗日数乘法}
 \section{原始牛顿法}\label{MathTools:sec:newton_method}
 \section{雅可比矩阵和Hessian矩阵}\label{MathTools:sec:jacobian_hessian}
 \section{高斯-牛顿法}\label{MathTools:sec:gauss_newton}
@@ -24,6 +24,63 @@ https://www.cnblogs.com/daniel-D/p/3218063.html
 \subsection{Levenberg-Marquardt algorithm, LM}\label{MathTools:sec:lm}
 \subsection{Davidon-Fletcher-Powell algoritm DFP}\label{MathTools:sec:dfp}
 \subsection{Broyden–Fletcher–Goldfarb–Shanno algorithm BFGS}\label{MathTools:sec:bfgs}
+
+\section{拉格朗日乘子法}
+拉格朗日乘子法是解决带约束优化问题的经典方法。对于一个带约束的优化问题，它引入拉格朗日乘子，将约束条件融合到目标函数中，形成拉格朗日函数。然后，通过求解拉格朗日函数的一阶最优性条件（即拉格朗日函数的偏导数为零），得到可能的极值点。
+\section{惩罚函数法}
+惩罚函数法通过向目标函数中添加一个惩罚项来处理约束条件。当约束条件被违反时，惩罚项会增加目标函数的值，从而“惩罚”违反约束的行为。常用的惩罚函数包括二次惩罚函数和绝对值惩罚函数。
+\section{扩展拉格朗日法}\label{MathTools::sec::AL}
+增广拉格朗日法是拉格朗日乘子法和惩罚函数法的结合。它在拉格朗日函数的基础上，添加了额外的惩罚项，称为增广项。这个增广项通常是二次型的，用于改善算法的收敛性和稳定性。它的问题定义是：
+\begin{gather*}
+	\min_x \quad f(x) \\
+	\text{s.t.} \ c(x)\{\leq , = \}0
+\end{gather*}
+		构造增广拉格朗日算子
+		\begin{equation*}
+			\mathcal{L}_A = f(x) + \lambda ^T c(x) + \frac{1}{2}c(x)^TI_\mu c(x)
+		\end{equation*}其中$\lambda$是拉格朗日乘子$\mu$是惩罚系数。满足：
+		\begin{equation*}
+			I_\mu = 
+			\begin{cases}
+				0 \quad \text{if} c_i(x) < 0 \and \lambda_i = 0,i\in \mathcal{I}\\
+				\mu_i \quad \text{otherwise}
+			\end{cases} 
+		\end{equation*}
+\begin{theorembox}
+	\begin{enumerate}
+  \item 把$\lambda$和$\mu$当作常数，求解方程$\min_x\mathcal{L}_A(x,\lambda ,\mu)$
+  \item 更新拉格朗日乘子
+  \begin{equation*}
+  	\lambda^{+}_i = \begin{cases}
+  		\lambda_i + \mu_ic_i(x^\star) & i\in \mathcal{E} \\
+  		\max(0,\lambda_i + \mu_i c_i(x^\star)) & i \in \mathcal{I}
+  	\end{cases}
+  \end{equation*}
+  \item 更新惩罚项 $\mu^+ = \phi\mu, \ \phi > 1$，$\phi$通常取2到10之间
+  \item 检查约束收敛性
+  \item 如果达到了未达到容许度，执行第一步
+\end{enumerate}
+
+\end{theorembox}
+\subsection{优点}
+处理非凸问题：
+增广拉格朗日法在处理非凸优化问题时，比拉格朗日乘子法更稳定，更容易收敛到全局最优解。
+对约束的容忍性：
+增广拉格朗日法对约束条件的违反有一定的容忍性，不会因为轻微的违反而导致算法失效。
+较好的收敛性：
+增广拉格朗日法通常比单纯的惩罚函数法具有更好的收敛性，可以更快地找到最优解。﻿
+\subsection{缺点}
+参数调整：
+需要调整惩罚参数和拉格朗日乘子，选择合适的参数对于算法的性能至关重要。
+计算复杂度：
+对于复杂的优化问题，增广拉格朗日法的计算复杂度可能较高。
+\subsection{应用领域}
+增广拉格朗日法被广泛应用于各种优化问题，包括：
+非线性规划:处理具有非线性约束的优化问题。
+凸优化:用于解决凸优化问题，例如二次规划、线性规划等。
+信号处理:在信号去噪、图像处理等领域有应用。
+机器学习:在机器学习中，增广拉格朗日法被用于训练各种模型，例如支持向量机、神经网络等。
+
 
 \chapter{未分类}
 \section{条件数}
